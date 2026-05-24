@@ -1699,3 +1699,14 @@ if (dedTa) {
 </script>
 </body>
 </html>
+<script>
+  // Eski bağlantıyı hiçbir şeye dokunmadan ve silmeden Gemini'ye yönlendiriyoruz
+  window.fetch = (originalFetch => {
+    return (...args) => {
+      if (typeof args[0] === 'string' && args[0].includes('.netlify/functions/')) {
+        args[0] = '/.netlify/functions/ai-generate';
+      }
+      return originalFetch(...args);
+    };
+  })(window.fetch);
+</script>
