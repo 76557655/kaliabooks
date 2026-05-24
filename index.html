@@ -1700,76 +1700,42 @@ if (dedTa) {
 </body>
 </html>
 <script>
-  // 1. TÜM BUTONLARI VE EDİTÖR İSTEKLERİNİ TEK BİR MERKEZDEN YAKALAYIP GEMINI'YE BAĞLAYAN AKILLI KÖPRÜ
+  // 1. TÜM İSTEKLERİ YAKALAYIP GEMINI'YE BAĞLAYAN VE PAKETİ AÇAN TRAFİK POLİSİ
   window.fetch = (originalFetch => {
     return (...args) => {
-      // Eğer istek eski Claude adresine veya herhangi bir Netlify fonksiyonuna gitmeye çalışıyorsa önünü kesiyoruz
       if (typeof args[0] === 'string' && (args[0].includes('api.anthropic.com') || args[0].includes('.netlify/functions/'))) {
-        
-        // İstekte bir prompt (yapay zeka emri) varsa, kullanıcının yazım hatalarını da düzeltmesi için emri güncelliyoruz
-        if (args[1] && args[1].body) {
-          try {
-            const bodyData = JSON.parse(args[1].body);
-            let userPrompt = '';
-            
-            if (bodyData.messages && bodyData.messages[0]) {
-              userPrompt = bodyData.messages[0].content;
-            } else if (bodyData.text) {
-              userPrompt = bodyData.text;
-            }
-
-            // Yapay zekaya imla ve yazım hatalarını düzeltmesini kesin olarak emrediyoruz
-            if (userPrompt) {
-              bodyData.text = userPrompt;
-              bodyData.style = S.book.style || "Sıcak & Kişisel";
-              // Arka plandaki sunucumuza yazım hatası düzeltme emrini entegre ediyoruz
-              args[1].body = JSON.stringify(bodyData);
-            }
-          } catch (e) {
-            console.log("Bağlantı güncelleme detayı es geçildi.");
-          }
-        }
-        
-        // İsteği eski, kilitli Claude merkezine değil, bizim Netlify'daki canavar gibi çalışan ücretsiz Gemini kapımıza fırlatıyoruz!
         args[0] = '/.netlify/functions/ai-generate';
-        
-        // Tarayıcının köken güvenlik duvarına takılmamak için headers alanını temizliyoruz
         if (args[1] && args[1].headers) {
           args[1].headers = { 'Content-Type': 'application/json' };
         }
       }
-      return originalFetch(...args);
+      return originalFetch(...args).then(async (response) => {
+        // Eğer istek bizim Gemini fonksiyonuna gittiyse, gelen paketi düz yazıya çeviriyoruz
+        if (typeof args[0] === 'string' && args[0].includes('ai-generate')) {
+          const clonedRes = response.clone();
+          try {
+            const data = await clonedRes.json();
+            // Sitenin ön yüzü düz yazı beklediği için object object hatasını engelliyoruz
+            if (data && data.result) {
+              return new Response(data.result, { status: response.status, headers: response.headers });
+            }
+          } catch(e) {}
+        }
+        return response;
+      });
     };
   })(window.fetch);
 
-  // 2. ESKİ YAZILIMCININ O BOZUK VE ÇÖKEN ORİJİNAL ÇAĞRISINI TAMAMEN DEVRE DIŞI BIRAKIP EMRE AMADE EDEN SİHİRLİ FONKSİYON
+  // 2. ESKİ FONKSİYONU HİZAYA SOKAN VE REDAKSİYON EMREDECEK OLAN YAPI
   if (typeof callClaude === 'function') {
-    const originalCallClaude = callClaude;
     callClaude = async function(prompt) {
-      try {
-        const res = await fetch('//.netlify/functions/ai-generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            text: prompt,
-            style: S.book.style || "Sıcak & Kişisel"
-          })
-        });
-        const data = await res.json();
-        // Eğer sistemden hata dönerse veya boş kalırsa yapıyı koru
-        if (data.result) return data.result;
-        if (data.error) throw new Error(data.error);
-        return data;
-      } catch (error) {
-        // Yedekli sistem: Eğer Netlify fonksiyon adresi çift slash ile takılırsa tek slash ile tekrar dene
-        const res = await fetch('/letlify/functions/ai-generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: prompt, style: S.book.style || "Sıcak & Kişisel" })
-        });
-        const data = await res.json();
-        return data.result || data;
-      }
+      const res = await fetch('/.netlify/functions/ai-generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: prompt, style: S.book.style || "Sıcak & Kişisel" })
+      });
+      const data = await res.json();
+      return data.result || data;
     };
   }
 </script>
