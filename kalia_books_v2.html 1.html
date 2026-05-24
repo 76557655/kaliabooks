@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaliaBooks — Senin Hikayen Kitap Olsun</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F1EB;
+  --bg2: #EDE8DF;
+  --bg3: #E6E0D4;
+  --card: #FFFDF8;
+  --gold: #B8860B;
+  --gold2: #D4A84B;
+  --gold3: #F5D87A;
+  --gold-bg: #FDF6E3;
+  --gold-bd: #E8C56A;
+  --navy: #1C2A4A;
+  --navy2: #243256;
+  --blue-bg: #EBF3FB;
+  --blue-bd: #A8CCF0;
+  --blue-tx: #1A5FA8;
+  --green-bg: #EAF5EC;
+  --green-bd: #8FCC9A;
+  --green-tx: #1A6B2A;
+  --red-bg: #FDECEC;
+  --red-bd: #F0AAAA;
+  --red-tx: #A02020;
+  --t1: #1A1410;
+  --t2: #5A4E3C;
+  --t3: #9A8870;
+  --t4: #C4B8A0;
+  --bd: #D8D0C0;
+  --bd2: #C0B8A8;
+  --r: 8px;
+  --rl: 14px;
+  --shadow: 0 2px 12px rgba(26,20,10,.08);
+  --shadow-lg: 0 8px 32px rgba(26,20,10,.12);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--gold-bd); border-radius: 3px; }
+
+/* NAV */
+nav {
+  background: var(--navy);
+  padding: 0 36px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-icon {
+  width: 34px; height: 34px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: 700; color: var(--navy);
+  font-family: 'Cormorant Garamond', serif;
+}
+.nav-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 700;
+  color: #F0EDE6; letter-spacing: .04em;
+}
+.nav-title span { color: var(--gold2); }
+.nav-sub { font-size: 10px; color: rgba(240,237,230,.45); letter-spacing: .1em; text-transform: uppercase; }
+.nav-steps {
+  display: flex; gap: 3px;
+}
+.ns {
+  padding: 5px 11px; border-radius: 5px; border: none;
+  background: transparent; color: rgba(240,237,230,.45);
+  font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all .2s; letter-spacing: .04em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.ns:hover { color: rgba(240,237,230,.8); background: rgba(255,255,255,.07); }
+.ns.active { color: var(--gold2); background: rgba(212,168,75,.15); }
+.ns.done { color: var(--green-tx); }
+.nav-r { display: flex; align-items: center; gap: 8px; }
+
+/* BUTTONS */
+.btn {
+  padding: 10px 20px; border-radius: var(--r); border: 1px solid var(--bd2);
+  background: var(--card); color: var(--t1);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn:hover { background: var(--bg2); }
+.btn-gold {
+  background: var(--gold-bg); border-color: var(--gold-bd); color: var(--gold);
+}
+.btn-gold:hover { background: var(--gold2); color: var(--navy); border-color: var(--gold2); }
+.btn-navy {
+  background: var(--navy); border-color: var(--navy); color: #F0EDE6;
+}
+.btn-navy:hover { background: var(--navy2); }
+.btn-blue { background: var(--blue-bg); border-color: var(--blue-bd); color: var(--blue-tx); }
+.btn-blue:hover { background: var(--blue-tx); color: #fff; border-color: var(--blue-tx); }
+.btn-green { background: var(--green-bg); border-color: var(--green-bd); color: var(--green-tx); }
+.btn-green:hover { background: var(--green-tx); color: #fff; }
+.btn-red { background: var(--red-bg); border-color: var(--red-bd); color: var(--red-tx); }
+.btn-sm { padding: 7px 14px; font-size: 12px; }
+.btn-xs { padding: 5px 10px; font-size: 11px; border-radius: 5px; }
+.btn-full { width: 100%; justify-content: center; }
+.btn-dashed { border-style: dashed; background: transparent; }
+
+/* LAYOUT */
+.page { display: none; }
+.page.on { display: block; }
+.container { max-width: 1060px; margin: 0 auto; padding: 44px 36px 80px; }
+.container-sm { max-width: 740px; margin: 0 auto; padding: 44px 36px 80px; }
+.container-md { max-width: 880px; margin: 0 auto; padding: 44px 36px 80px; }
+
+/* CARDS */
+.card {
+  background: var(--card); border: 1px solid var(--bd);
+  border-radius: var(--rl); padding: 20px;
+  box-shadow: var(--shadow); margin-bottom: 14px;
+}
+.card-hd {
+  font-size: 11px; color: var(--gold); text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600; margin-bottom: 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--bd);
+}
+.card-gold { background: var(--gold-bg); border-color: var(--gold-bd); }
+.card-navy { background: var(--navy); border-color: var(--navy2); color: #F0EDE6; }
+
+/* FORMS */
+.inp, .sel, .ta {
+  width: 100%; padding: 10px 13px;
+  border: 1px solid var(--bd2); border-radius: var(--r);
+  background: var(--bg); color: var(--t1);
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  transition: border-color .2s, box-shadow .2s;
+  display: block; margin-bottom: 10px;
+}
+.inp:focus, .sel:focus, .ta:focus {
+  outline: none; border-color: var(--gold2);
+  box-shadow: 0 0 0 3px rgba(212,168,75,.12);
+}
+.ta { resize: vertical; min-height: 140px; font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; line-height: 1.8; }
+.inp-lbl { font-size: 11px; color: var(--t2); font-weight: 600; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 5px; display: block; }
+.chk-row { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 8px; cursor: pointer; }
+.chk-row input { width: 15px; height: 15px; accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+.chk-row span { font-size: 13px; color: var(--t2); line-height: 1.5; }
+
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+/* STEPS INDICATOR */
+.steps-ind { display: flex; align-items: center; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
+.si-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; }
+.si-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--bd2); background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: var(--t3);
+}
+.si-dot.done { background: var(--green-bg); border-color: var(--green-bd); color: var(--green-tx); }
+.si-dot.active { background: var(--gold-bg); border-color: var(--gold-bd); color: var(--gold); }
+.si-lbl { font-size: 10px; color: var(--t3); text-align: center; max-width: 60px; line-height: 1.2; }
+.si-lbl.active { color: var(--gold); font-weight: 600; }
+.si-lbl.done { color: var(--green-tx); }
+.si-line { flex: 1; height: 1px; background: var(--bd); margin: 15px 4px 0; min-width: 14px; }
+.si-line.done { background: var(--green-bd); }
+
+/* NOTICE BOXES */
+.notice { padding: 11px 14px; border-radius: var(--r); margin-bottom: 12px; font-size: 13px; }
+.notice-gold { background: var(--gold-bg); border: 1px solid var(--gold-bd); color: var(--gold); }
+.notice-green { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green-tx); }
+.notice-blue { background: var(--blue-bg); border: 1px solid var(--blue-bd); color: var(--blue-tx); }
+.notice-red { background: var(--red-bg); border: 1px solid var(--red-bd); color: var(--red-tx); }
+
+/* TOAST */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--navy); color: #F0EDE6;
+  padding: 11px 24px; border-radius: var(--r); font-size: 14px; font-weight: 500;
+  z-index: 1000; opacity: 0; transition: opacity .3s;
+  pointer-events: none; white-space: nowrap; box-shadow: var(--shadow-lg);
+}
+#toast.show { opacity: 1; }
+
+/* LOADING */
+#loading-ov {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(26,20,10,.55); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+}
+#loading-ov.show { display: flex; }
+.loading-box { background: var(--card); border-radius: var(--rl); padding: 36px 48px; text-align: center; box-shadow: var(--shadow-lg); }
+.loading-icon { font-size: 52px; animation: spin2 2s ease-in-out infinite; margin-bottom: 16px; }
+@keyframes spin2 { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+.loading-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--t1); margin-bottom: 6px; }
+.loading-sub { font-size: 13px; color: var(--t3); }
+
+/* AI BAR */
+.ai-bar {
+  display: none; align-items: center; gap: 9px;
+  padding: 9px 13px; border-radius: var(--r); margin: 8px 0;
+  background: var(--gold-bg); border: 1px solid var(--gold-bd);
+  font-size: 13px; color: var(--gold);
+}
+.ai-bar.show { display: flex; }
+.ai-spin {
+  width: 15px; height: 15px; border-radius: 50%;
+  border: 2px solid var(--gold-bd); border-top-color: var(--gold);
+  animation: spin .7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* BOOK PREVIEW */
+.pvb {
+  border: 1px solid var(--bd); border-radius: var(--rl);
+  overflow: hidden; box-shadow: var(--shadow-lg);
+  position: sticky; top: 70px;
+}
+.pvb-cover {
+  height: 220px; background: linear-gradient(155deg, #1A2E55, #0D1830, #1C2445);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 22px; position: relative; overflow: hidden;
+}
+.pvb-spine {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 7px;
+  background: linear-gradient(180deg, var(--gold), var(--gold2), var(--gold)); opacity: .75;
+}
+.pvb-orn { font-size: 32px; color: rgba(212,168,75,.35); margin-bottom: 8px; font-family: 'Cormorant Garamond', serif; }
+.pvb-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic;
+  color: rgba(255,255,255,.94); text-align: center; line-height: 1.35; margin-bottom: 6px;
+  transition: all .4s;
+}
+.pvb-author { font-size: 9px; color: rgba(212,168,75,.72); letter-spacing: .18em; text-transform: uppercase; }
+.pvb-body { padding: 13px 15px; background: var(--card); }
+.pvb-exc {
+  font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic;
+  color: var(--t2); line-height: 1.7; min-height: 50px;
+}
+.pvb-stats {
+  display: flex; justify-content: space-around; padding: 9px;
+  background: var(--bg2); border-top: 1px solid var(--bd);
+}
+.pvbs-n { font-size: 17px; font-weight: 600; color: var(--gold); text-align: center; }
+.pvbs-l { font-size: 9px; color: var(--t3); text-transform: uppercase; letter-spacing: .06em; }
+
+/* CHAPTER LIST */
+.ch-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 13px; border: 1px solid var(--bd); border-radius: var(--r);
+  cursor: pointer; transition: all .2s; margin-bottom: 6px;
+  background: var(--card);
+}
+.ch-item:hover { border-color: var(--bd2); background: var(--bg2); }
+.ch-item.active { border-color: var(--gold-bd); background: var(--gold-bg); }
+.ch-item.ch-done { border-color: var(--green-bd); background: var(--green-bg); }
+.ch-num {
+  width: 25px; height: 25px; border-radius: 50%;
+  background: var(--bg2); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--t3); flex-shrink: 0;
+}
+.ch-item.active .ch-num { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-bd); }
+.ch-item.ch-done .ch-num { background: var(--green-bg); color: var(--green-tx); }
+.ch-title { font-size: 13px; font-weight: 500; color: var(--t1); flex: 1; }
+.ch-status { font-size: 10px; color: var(--t3); white-space: nowrap; }
+.ch-item.ch-done .ch-status { color: var(--green-tx); }
+
+/* PUBLISH CARDS */
+.pub-card {
+  border: 1px solid var(--bd); border-radius: var(--rl);
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: all .3s; background: var(--card); position: relative;
+}
+.pub-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.pub-card.sel { border-color: var(--gold-bd); background: var(--gold-bg); box-shadow: 0 0 0 2px rgba(212,168,75,.2); }
+.pub-icon { font-size: 38px; margin-bottom: 10px; display: block; }
+.pub-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.pub-desc { font-size: 12px; color: var(--t2); line-height: 1.55; margin-bottom: 10px; }
+.pub-price { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+.pub-sub { font-size: 11px; color: var(--t3); margin-bottom: 12px; }
+.pub-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 10px; font-weight: 600; margin-bottom: 8px; letter-spacing: .06em;
+}
+
+/* RECIPIENT */
+.rec-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 13px; border: 1px solid var(--bd); border-radius: var(--r);
+  background: var(--card); margin-bottom: 8px;
+}
+.rec-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--gold-bg); border: 1px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; font-weight: 700; color: var(--gold);
+}
+.rec-info { flex: 1; }
+.rec-name { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 2px; }
+.rec-det { font-size: 11px; color: var(--t2); line-height: 1.5; }
+
+/* MEDIA CARDS */
+.mc {
+  border: 1px solid var(--bd); border-radius: var(--r);
+  padding: 12px 8px; text-align: center; cursor: pointer;
+  transition: all .25s; background: var(--card);
+}
+.mc:hover { border-color: var(--bd2); background: var(--bg2); }
+.mc.mc-on { border-color: var(--green-bd); background: var(--green-bg); }
+.mc-icon { font-size: 24px; margin-bottom: 6px; }
+.mc-name { font-size: 11px; font-weight: 600; color: var(--t1); margin-bottom: 3px; }
+.mc-st { font-size: 10px; color: var(--t3); }
+.mc.mc-on .mc-st { color: var(--green-tx); }
+
+/* VOICE */
+.voice-box {
+  background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--rl);
+  padding: 20px; text-align: center; margin-bottom: 12px;
+}
+.mic-btn {
+  width: 68px; height: 68px; border-radius: 50%; border: 1px solid var(--red-bd);
+  background: var(--red-bg); color: var(--red-tx);
+  font-size: 26px; cursor: pointer; transition: all .3s;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.mic-btn:hover { background: var(--red-tx); color: #fff; }
+.mic-btn.rec { animation: mic-pulse 1.2s ease-in-out infinite; }
+@keyframes mic-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.waves { display: flex; align-items: center; justify-content: center; gap: 3px; height: 28px; margin-bottom: 8px; }
+.wave { width: 3px; border-radius: 2px; background: var(--gold2); min-height: 4px; transition: height .15s; }
+.rec-timer { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold); font-weight: 600; }
+
+/* UPLOAD */
+.upload-drop {
+  border: 1.5px dashed var(--bd2); border-radius: var(--rl);
+  padding: 28px; text-align: center; cursor: pointer; transition: all .25s;
+}
+.upload-drop:hover { border-color: var(--gold2); background: var(--gold-bg); }
+
+/* PLAN CARDS */
+.plan-card {
+  border: 1px solid var(--bd); border-radius: var(--rl); padding: 16px;
+  cursor: pointer; transition: all .25s; background: var(--card); text-align: center;
+}
+.plan-card:hover { border-color: var(--bd2); }
+.plan-card.sel { border: 1.5px solid var(--gold-bd); background: var(--gold-bg); }
+
+/* WRITE LAYOUT */
+.write-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+.write-tabs { display: flex; gap: 3px; background: var(--bg2); border-radius: var(--r); padding: 4px; margin-bottom: 16px; border: 1px solid var(--bd); }
+.wtab {
+  flex: 1; padding: 9px; border: none; border-radius: 6px;
+  background: transparent; color: var(--t3); font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.wtab.active { background: var(--card); color: var(--gold); box-shadow: var(--shadow); }
+
+/* SOCIAL BTNS */
+.soc-btn {
+  flex: 1; padding: 10px; border: 1px solid var(--bd2); border-radius: var(--r);
+  background: var(--card); color: var(--t1); font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; text-align: center;
+}
+.soc-btn:hover { background: var(--bg2); }
+
+/* PROGRESS */
+.prog-bar { height: 4px; background: var(--bd); border-radius: 2px; overflow: hidden; margin: 8px 0; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; transition: width 1s ease; }
+
+/* INLINE FORM (no modal) */
+.inline-form {
+  border: 1.5px solid var(--gold-bd); border-radius: var(--rl);
+  padding: 18px; margin-top: 12px; background: var(--gold-bg);
+  display: none;
+}
+.inline-form.open { display: block; }
+
+/* CONTINUE BANNER */
+.continue-bar {
+  background: var(--gold-bg); border: 1px solid var(--gold-bd); border-radius: var(--r);
+  padding: 13px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+
+/* SOCIAL SHARE */
+.share-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.share-btn { padding: 10px 6px; border: 1px solid var(--bd); border-radius: var(--r); background: var(--card); cursor: pointer; transition: all .2s; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--t1); }
+.share-btn:hover { background: var(--bg2); border-color: var(--bd2); }
+
+/* DIVIDER */
+.divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; font-size: 12px; color: var(--t3); }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--bd); }
+
+/* STAT BOXES */
+.stat-box { background: var(--bg2); border-radius: var(--r); padding: 10px; text-align: center; }
+.stat-n { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--gold); }
+.stat-l { font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+
+/* SUCCESS */
+.success-panel { background: var(--green-bg); border: 1.5px solid var(--green-bd); border-radius: var(--rl); padding: 24px; text-align: center; margin-top: 16px; display: none; }
+.success-panel.show { display: block; }
+
+@media(max-width: 900px) {
+  .write-layout { grid-template-columns: 1fr; }
+  .pvb { display: none; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .grid4 { grid-template-columns: repeat(2, 1fr); }
+  .share-grid { grid-template-columns: repeat(2, 1fr); }
+  .container, .container-sm, .container-md { padding: 28px 16px 60px; }
+  nav .nav-steps { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="goTo(0)">
+    <div class="nav-icon">KB</div>
+    <div>
+      <div class="nav-title">Kalia<span>Books</span></div>
+      <div class="nav-sub">Senin Hikayen Kitap Olsun</div>
+    </div>
+  </div>
+  <div class="nav-steps" id="nav-steps">
+    <button class="ns active" onclick="goTo(0)">Ana Sayfa</button>
+    <button class="ns" onclick="goTo(1)">Uye Ol</button>
+    <button class="ns" onclick="goTo(2)">Kitap Kur</button>
+    <button class="ns" onclick="goTo(3)">Yaz / Anlat</button>
+    <button class="ns" onclick="goTo(4)">AI Editor</button>
+    <button class="ns" onclick="goTo(5)">Yayinla</button>
+    <button class="ns" onclick="goTo(6)">Hediye & Dagit</button>
+  </div>
+  <div class="nav-r">
+    <button class="btn btn-sm" onclick="openLoginForm()">Giris Yap</button>
+    <button class="btn btn-gold btn-sm" onclick="goTo(1)">&#9670; Kitabimi Yaz</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE 0 — LANDING
+============================================================ -->
+<div class="page on" id="page-0">
+  <div class="container">
+    <div class="card card-navy" style="text-align:center;padding:52px 40px;margin-bottom:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1C2A4A,var(--gold),var(--gold2),var(--gold),#1C2A4A)"></div>
+      <div style="font-size:11px;color:rgba(212,168,75,.7);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px">&#9670; KaliaBooks — Yazarlik Ofisi</div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:700;color:#F0EDE6;line-height:1.07;margin-bottom:16px">
+        Senin <em style="color:var(--gold2)">Hikayen</em><br>Kitap Olsun
+      </h1>
+      <p style="font-size:16px;color:rgba(240,237,230,.65);max-width:480px;margin:0 auto 28px;line-height:1.75;font-weight:300">
+        Anlat ya da yaz — yapay zeka editorun. Dijital, sesli, basili. Sevdiklerine miras birak. Belki bir gun dizi olur.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:28px">
+        <button class="btn btn-gold" onclick="goTo(1)">&#128214; Kitabimi Yazmaya Basla</button>
+        <button class="btn" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#F0EDE6" onclick="goTo(3)">&#127908; Sesle Anlat</button>
+        <button class="btn" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:rgba(240,237,230,.7)" onclick="openLoginForm()">Zaten uyeyim &rarr;</button>
+      </div>
+      <div style="display:flex;gap:32px;justify-content:center">
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold2);font-weight:600">3.2K+</div><div style="font-size:10px;color:rgba(212,168,75,.6);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Eser</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold2);font-weight:600">12</div><div style="font-size:10px;color:rgba(212,168,75,.6);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Dil</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold2);font-weight:600">%94</div><div style="font-size:10px;color:rgba(212,168,75,.6);text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Memnuniyet</div></div>
+      </div>
+    </div>
+    <!-- Login inline form -->
+    <div class="inline-form" id="login-form">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--t1);margin-bottom:4px">KaliaBooks Giris</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:16px">Kitabiniza kaldiginiz yerden devam edin</div>
+      <div class="grid2" style="margin-bottom:10px">
+        <button class="soc-btn" onclick="socialLogin('Google')">&#127760; Google ile Devam</button>
+        <button class="soc-btn" onclick="socialLogin('Apple')">&#127822; Apple ile Devam</button>
+      </div>
+      <div class="divider">veya e-posta ile</div>
+      <label class="inp-lbl">E-posta</label>
+      <input type="email" class="inp" id="login-email" placeholder="email@ornek.com">
+      <label class="inp-lbl">Sifre</label>
+      <input type="password" class="inp" id="login-pass" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="doLogin()">Giris Yap</button>
+        <button class="btn btn-sm" onclick="closeLoginForm()">Iptal</button>
+      </div>
+      <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--t2)">
+        Hesabin yok mu? <span style="color:var(--gold);cursor:pointer;font-weight:600" onclick="closeLoginForm();goTo(1)">Uye Ol</span>
+        &nbsp;·&nbsp; <span style="color:var(--t3);cursor:pointer" onclick="doForgotPass()">Sifremi unuttum</span>
+      </div>
+    </div>
+    <!-- Features -->
+    <div class="grid3">
+      <div class="card" style="cursor:pointer" onclick="goTo(3)">
+        <div style="font-size:26px;margin-bottom:10px">&#9997;&#65039;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">Yaz veya Sesle Anlat</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Metin yaz ya da sesle anlat. Sistem kaldigin yeri hatirlar.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="goTo(4)">
+        <div style="font-size:26px;margin-bottom:10px">&#10024;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">AI Editor</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Claude AI metni edebi dile cevirir, bolum bolum onaylarsin.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="goTo(5)">
+        <div style="font-size:26px;margin-bottom:10px">&#128218;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">3 Format</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Dijital, sesli veya basili. Sen sec, biz hazirlariz.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="goTo(6)">
+        <div style="font-size:26px;margin-bottom:10px">&#127873;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">Hediye Gonder</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Ozel on yaziyla cocuklarina, torunlarina kargo ile gonder.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="goTo(6)">
+        <div style="font-size:26px;margin-bottom:10px">&#127757;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">Dijital Medyada</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Spotify, Apple Books, Amazon — otomatik dagitim.</div>
+      </div>
+      <div class="card" style="cursor:pointer" onclick="goTo(6)">
+        <div style="font-size:26px;margin-bottom:10px">&#127916;</div>
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">Dizi / Film</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.55">Hikayeler Netflix ve dijital medyaya otomatik sunulur.</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:40px;background:var(--card);border:1px solid var(--bd);border-radius:var(--rl);margin-top:8px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,42px);font-weight:600;color:var(--t1);margin-bottom:12px">
+        Herkesin icinde <em style="color:var(--gold)">bir kitap</em> var
+      </div>
+      <p style="font-size:14px;color:var(--t2);max-width:480px;margin:0 auto 22px;line-height:1.7">
+        Anilariniz, hayat dersleriniz, sevgileriniz — bunlar dunyaya birakacaginiz en degerli mirasinizdir.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-navy" onclick="goTo(1)">&#128214; Kitabimi Yazmaya Basla</button>
+        <button class="btn btn-gold" onclick="goTo(3)">&#127908; Sesle Anlat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 1 — REGISTER
+============================================================ -->
+<div class="page" id="page-1">
+  <div class="container-md">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 1 / 6</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--t1);margin-bottom:6px">Yazarlik <em style="color:var(--gold)">Ofisinize</em> Hos Geldiniz</h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:18px">Taslak olusturmak ucretsiz — yayinlamak icin odeme gerekir</p>
+    <div id="si-1"></div>
+    <div style="font-size:12px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">&#9670; Plan Secin</div>
+    <div class="grid3" style="margin-bottom:18px">
+      <div class="plan-card" id="plan-free" onclick="selPlan('free')">
+        <div style="font-size:22px;margin-bottom:8px">&#128221;</div>
+        <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">Ucretsiz</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600;margin-bottom:6px">&#8378;0</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Sonsuza kadar</div>
+        <div style="font-size:11px;color:var(--t2);text-align:left">
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Taslak olusturma</div>
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; AI onizleme (3 sayfa)</div>
+          <div style="padding:2px 0">&#9670; 1 kitap projesi</div>
+        </div>
+      </div>
+      <div class="plan-card sel" id="plan-author" onclick="selPlan('author')">
+        <div style="font-size:22px;margin-bottom:8px">&#9997;&#65039;</div>
+        <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">Yazar</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600;margin-bottom:6px">&#8378;299<span style="font-size:13px;color:var(--t3)">/ay</span></div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">En populer</div>
+        <div style="font-size:11px;color:var(--t2);text-align:left">
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Sinursiz yazim</div>
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; AI editor tam erisim</div>
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Dijital yayin dahil</div>
+          <div style="padding:2px 0">&#9670; 5 kitap projesi</div>
+        </div>
+      </div>
+      <div class="plan-card" id="plan-premium" onclick="selPlan('premium')">
+        <div style="font-size:22px;margin-bottom:8px">&#128081;</div>
+        <div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">Premium</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);font-weight:600;margin-bottom:6px">&#8378;799<span style="font-size:13px;color:var(--t3)">/ay</span></div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:8px">Tam ofis</div>
+        <div style="font-size:11px;color:var(--t2);text-align:left">
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Her sey dahil</div>
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Basili kitap 1/ay</div>
+          <div style="padding:2px 0;border-bottom:1px solid var(--bd)">&#9670; Sinursiz proje</div>
+          <div style="padding:2px 0">&#9670; Netflix basvurusu</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd">&#9670; Hesap Olusturun</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="soc-btn" onclick="socialLogin('Google')">&#127760; Google ile Devam</button>
+        <button class="soc-btn" onclick="socialLogin('Apple')">&#127822; Apple ile Devam</button>
+      </div>
+      <div class="divider">veya e-posta ile</div>
+      <div class="grid2">
+        <div>
+          <label class="inp-lbl">Ad Soyad *</label>
+          <input type="text" class="inp" id="reg-name" placeholder="Ahmet Yilmaz">
+          <label class="inp-lbl">Telefon</label>
+          <input type="tel" class="inp" id="reg-phone" placeholder="+90 555 000 0000">
+          <label class="inp-lbl">Sehir</label>
+          <input type="text" class="inp" id="reg-city" placeholder="Istanbul">
+        </div>
+        <div>
+          <label class="inp-lbl">E-posta *</label>
+          <input type="email" class="inp" id="reg-email" placeholder="ahmet@ornek.com">
+          <label class="inp-lbl">Sifre *</label>
+          <input type="password" class="inp" id="reg-pass" placeholder="En az 8 karakter">
+          <label class="inp-lbl">Sifre Tekrar *</label>
+          <input type="password" class="inp" id="reg-pass2" placeholder="Sifreyi tekrar girin">
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label class="chk-row"><input type="checkbox" id="chk-kvkk"><span>KVKK aydinlatma metnini okudum ve onayliyorum. <span style="color:var(--red-tx)">*</span></span></label>
+        <label class="chk-row"><input type="checkbox" id="chk-terms"><span>Kullanim kosullarini kabul ediyorum. <span style="color:var(--red-tx)">*</span></span></label>
+        <label class="chk-row"><input type="checkbox" id="chk-mkt"><span>E-posta bildirimleri almak istiyorum. (Istege bagli)</span></label>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="doRegister()">&#9670; Uye Ol &amp; Yazarlik Ofisimi Ac</button>
+      <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--t2)">Zaten uye misiniz? <span style="color:var(--gold);cursor:pointer;font-weight:600" onclick="openLoginForm()">Giris Yapin</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 2 — BOOK SETUP
+============================================================ -->
+<div class="page" id="page-2">
+  <div class="container-md">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 2 / 6</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--t1);margin-bottom:6px">Kitabinizi <em style="color:var(--gold)">Kurun</em></h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:18px">Tur, sayfa sayisi, yazim stili ve kapak tasarimini belirleyin</p>
+    <div id="si-2"></div>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <label class="inp-lbl">Kitap Basligi *</label>
+          <input type="text" class="inp" id="setup-title" placeholder="Kitabiniza bir baslik verin..." oninput="syncPreview()">
+          <label class="inp-lbl">Alt Baslik</label>
+          <input type="text" class="inp" id="setup-subtitle" placeholder="Istege bagli">
+          <label class="inp-lbl">Yazar Adi *</label>
+          <input type="text" class="inp" id="setup-author" placeholder="Adiniz Soyadiniz — 2025" oninput="syncPreview()">
+          <label class="inp-lbl">Kitap Turu</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+            <div class="bt-card sel" id="bt-memory" onclick="selBT('memory',this)">
+              <span style="font-size:18px">&#128214;</span>
+              <div><div class="bt-n">Ani &amp; Yasam</div><div class="bt-d">Hayat hikayeniz</div></div>
+            </div>
+            <div class="bt-card" id="bt-letter" onclick="selBT('letter',this)">
+              <span style="font-size:18px">&#128140;</span>
+              <div><div class="bt-n">Mektup</div><div class="bt-d">Sevdiklerinize</div></div>
+            </div>
+            <div class="bt-card" id="bt-youth" onclick="selBT('youth',this)">
+              <span style="font-size:18px">&#127807;</span>
+              <div><div class="bt-n">Genclik Anilari</div><div class="bt-d">O yillar, o gunler</div></div>
+            </div>
+            <div class="bt-card" id="bt-novel" onclick="selBT('novel',this)">
+              <span style="font-size:18px">&#9998;&#65039;</span>
+              <div><div class="bt-n">Roman / Kurgu</div><div class="bt-d">Hayal gucunuz</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="inp-lbl">Hedef Sayfa Sayisi</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <div class="pg-opt" onclick="selPg('50',this)">50</div>
+            <div class="pg-opt sel" onclick="selPg('100',this)">100</div>
+            <div class="pg-opt" onclick="selPg('150',this)">150</div>
+            <div class="pg-opt" onclick="selPg('200',this)">200</div>
+            <div class="pg-opt" onclick="selPg('300',this)">300</div>
+            <div class="pg-opt" onclick="selPg('500',this)">500</div>
+          </div>
+          <label class="inp-lbl">Yazim Dili</label>
+          <select class="sel" id="setup-lang">
+            <option>&#127481;&#127479; Turkce</option>
+            <option>&#127482;&#127480; English</option>
+            <option>&#127465;&#127466; Deutsch</option>
+            <option>&#127467;&#127479; Francais</option>
+            <option>&#127466;&#127480; Espanol</option>
+          </select>
+          <label class="inp-lbl">Edebi Stil</label>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px">
+            <div class="sty-opt sel" onclick="selSty(this)">Sicak &amp; Kisisel</div>
+            <div class="sty-opt" onclick="selSty(this)">Siirsel</div>
+            <div class="sty-opt" onclick="selSty(this)">Sade &amp; Yalin</div>
+            <div class="sty-opt" onclick="selSty(this)">Klasik Edebi</div>
+            <div class="sty-opt" onclick="selSty(this)">Modern</div>
+          </div>
+          <label class="inp-lbl">Editore Not</label>
+          <input type="text" class="inp" id="setup-note" placeholder="Ornek: Torununuma birakiyorum...">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="doBookSetup()">&#9670; Kitabimi Kur &amp; Yazmaya Basla</button>
+        <button class="btn btn-sm" onclick="goTo(1)">&#8592; Geri</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 3 — WRITE / VOICE
+============================================================ -->
+<div class="page" id="page-3">
+  <div class="container">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 3 / 6 — Yazarlik Ofisiniz</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--t1);margin-bottom:4px">Yaz veya <em style="color:var(--gold)">Sesle Anlat</em></h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:16px" id="write-sub">Sistem kaldigin yeri hatirlar — istedigin zaman devam edebilirsin</p>
+    <div id="si-3"></div>
+    <!-- Continue banner -->
+    <div class="continue-bar" id="continue-bar" style="display:none">
+      <div style="font-size:20px">&#128278;</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--t1)" id="cb-title">Kaldigin yerden devam et?</div>
+        <div style="font-size:12px;color:var(--t2);margin-top:2px" id="cb-sub">Son oturum: az once</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-gold btn-sm" onclick="continueWrite()">&#9654; Devam</button>
+        <button class="btn btn-sm" onclick="document.getElementById('continue-bar').style.display='none'">Yeni Basla</button>
+      </div>
+    </div>
+    <div class="write-layout">
+      <!-- LEFT -->
+      <div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="write-tabs">
+            <button class="wtab active" id="wtab-write" onclick="switchWT('write')">&#9997;&#65039; Yaz</button>
+            <button class="wtab" id="wtab-voice" onclick="switchWT('voice')">&#127908; Sesle Anlat</button>
+            <button class="wtab" id="wtab-upload" onclick="switchWT('upload')">&#128193; Dosya Yukle</button>
+          </div>
+          <div style="padding:0 18px 18px">
+            <!-- WRITE PANEL -->
+            <div id="wp-write">
+              <label class="inp-lbl">Bolum Basligi</label>
+              <input type="text" class="inp" id="w-chapter" placeholder="Bolum 1: Cocukluk Yillarim">
+              <label class="inp-lbl">Hikayenizi Yazin</label>
+              <textarea class="ta inp" id="w-text" rows="8" style="min-height:200px;margin-bottom:6px" oninput="liveWrite()" placeholder="Hayatinizi, anilarinizi, dusuncelerinizi buraya yazin...&#10;&#10;Ornegin: 'Babam her sabah bizi uyandirirdi... O koku hala burnumdadir. 1978 yazinda sekiz yasindaydim...'&#10;&#10;Yazmaya baslayin — AI edebi dile cevirir."></textarea>
+              <div style="display:flex;justify-content:space-between;margin:4px 0 12px;font-size:11px;color:var(--t3)">
+                <span><span id="wc-words" style="color:var(--gold);font-weight:600">0</span> kelime &middot; <span id="wc-pages" style="color:var(--gold);font-weight:600">0</span> sayfa</span>
+                <span id="wc-save">Otomatik kaydedilir</span>
+              </div>
+              <div class="ai-bar" id="write-ai-bar"><div class="ai-spin"></div>Claude AI edebi dile donusturuyor...</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-gold" onclick="generateAI()">&#10022; AI ile Kitabimi Olustur</button>
+                <button class="btn btn-sm" onclick="saveText()">&#128190; Kaydet</button>
+                <button class="btn btn-sm" onclick="clearText()">&#128465;&#65039; Temizle</button>
+              </div>
+            </div>
+            <!-- VOICE PANEL -->
+            <div id="wp-voice" style="display:none">
+              <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.65">Mikrofona basin, hikayenizi anlatmaya baslayin. AI sesinizi metne, ardindan kitaba donusturecek.</p>
+              <div class="voice-box">
+                <div style="font-size:10px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px">Ses Kaydi</div>
+                <button class="mic-btn" id="mic-btn" onclick="toggleRec()">&#127908;</button>
+                <div class="waves" id="waves">
+                  <div class="wave" style="height:5px"></div><div class="wave" style="height:10px"></div>
+                  <div class="wave" style="height:7px"></div><div class="wave" style="height:17px"></div>
+                  <div class="wave" style="height:9px"></div><div class="wave" style="height:22px"></div>
+                  <div class="wave" style="height:13px"></div><div class="wave" style="height:8px"></div>
+                  <div class="wave" style="height:16px"></div><div class="wave" style="height:5px"></div>
+                </div>
+                <div class="rec-timer" id="rec-timer">00:00</div>
+              </div>
+              <div id="transcript-result" style="display:none">
+                <div class="notice notice-green">&#10003; Ses basariyla metne cevrildi!</div>
+                <div style="background:var(--gold-bg);border:1px solid var(--gold-bd);border-radius:var(--r);padding:13px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--t1);line-height:1.7;margin-bottom:10px" id="transcript-text"></div>
+                <button class="btn btn-gold btn-full" onclick="generateAI()">&#10022; AI ile Kitabimi Olustur</button>
+              </div>
+            </div>
+            <!-- UPLOAD PANEL -->
+            <div id="wp-upload" style="display:none">
+              <p style="font-size:13px;color:var(--t2);margin-bottom:14px">Daha once yazdiginiz dosyayi yukleyin — AI devam eder.</p>
+              <div class="upload-drop" id="upload-drop"
+                onclick="document.getElementById('file-input').click()"
+                ondragover="event.preventDefault();this.style.borderColor='var(--gold2)'"
+                ondragleave="this.style.borderColor='var(--bd2)'"
+                ondrop="handleDrop(event)">
+                <div style="font-size:40px;margin-bottom:10px">&#128193;</div>
+                <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:5px">Dosyayi surukleyin veya tiklayin</div>
+                <div style="font-size:12px;color:var(--t3)">.txt .doc .docx .pdf — Maks. 50 MB</div>
+              </div>
+              <input type="file" id="file-input" style="display:none" accept=".txt,.doc,.docx,.pdf" onchange="handleFile(event)">
+              <div id="upload-result" style="display:none;margin-top:10px">
+                <div class="notice notice-green" id="upload-msg">&#10003; Dosya yuklendi!</div>
+                <button class="btn btn-gold btn-full" onclick="generateAI()">&#10022; AI ile Duzenle &amp; Kitabimi Olustur</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn btn-sm" onclick="goTo(2)">&#8592; Kitap Ayarlari</button>
+          <button class="btn btn-navy" style="flex:1;justify-content:center" onclick="generateAI()">&#10022; AI Editore Gonder &#8594;</button>
+        </div>
+      </div>
+      <!-- RIGHT: PREVIEW -->
+      <div>
+        <div style="font-size:10px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between">
+          <span>&#9670; Canli Onizleme</span>
+          <span id="preview-saved" style="color:var(--t3);font-size:9px">—</span>
+        </div>
+        <div class="pvb">
+          <div class="pvb-cover">
+            <div class="pvb-spine"></div>
+            <div class="pvb-orn">&#10087;</div>
+            <div class="pvb-title" id="pvb-title">Basligi girin</div>
+            <div class="pvb-author" id="pvb-author">Yazar Adi</div>
+          </div>
+          <div class="pvb-body">
+            <div class="pvb-exc" id="pvb-exc" style="color:var(--t3)">Yazmaya baslayin — AI burada gosterir...</div>
+            <div class="ai-bar" id="pvb-ai-bar" style="margin-top:6px"><div class="ai-spin"></div>AI isleniyor...</div>
+          </div>
+          <div class="pvb-stats">
+            <div><div class="pvbs-n" id="pvb-wn">0</div><div class="pvbs-l">Kelime</div></div>
+            <div><div class="pvbs-n" id="pvb-pn">0</div><div class="pvbs-l">Sayfa</div></div>
+            <div><div class="pvbs-n" id="pvb-pr">%0</div><div class="pvbs-l">Ilerleme</div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:8px">
+          <button class="btn btn-gold btn-sm" style="flex:1;justify-content:center" onclick="generateAI()">&#10022; Olustur</button>
+          <button class="btn btn-sm" style="flex:1;justify-content:center" onclick="saveText()">&#128190; Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 4 — AI EDITOR
+============================================================ -->
+<div class="page" id="page-4">
+  <div class="container">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 4 / 6 — AI Editor</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--t1);margin-bottom:4px">AI <em style="color:var(--gold)">Duzenleme</em> &amp; Onay</h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:16px">Bolum bolum inceleyin, duzenleyin, onaylayin</p>
+    <div id="si-4"></div>
+    <div class="grid2" style="align-items:start">
+      <!-- LEFT -->
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px">&#9670; Bolumler</div>
+        <div id="ch-list"></div>
+        <button class="btn btn-sm btn-full btn-dashed" style="margin-bottom:14px" onclick="addChapter()">+ Bolum Ekle</button>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px">&#9670; Icerik</div>
+        <textarea class="ta inp" id="ch-content" style="min-height:200px" oninput="S.book.chapters[activeChIdx]&&(S.book.chapters[activeChIdx].content=this.value)">Sol taraftan bir bolum secin.</textarea>
+        <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn btn-sm" onclick="rewriteCh()">&#8635; Yeniden Yaz</button>
+          <button class="btn btn-sm" onclick="extendCh()">&#128221; Uzat</button>
+          <button class="btn btn-sm" onclick="shortenCh()">&#9986;&#65039; Kisalt</button>
+          <button class="btn btn-green btn-sm" onclick="approveCh()">&#10003; Onayla</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn btn-sm" onclick="goTo(3)">&#8592; Yazmaya Don</button>
+          <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="finalizeBook()">&#9670; Kitabi Onayla &amp; Yayinla &#8594;</button>
+        </div>
+      </div>
+      <!-- RIGHT -->
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px">&#9670; Kapak &amp; Istatistik</div>
+        <div style="height:180px;background:linear-gradient(155deg,#1A2E55,#0D1830,#1C2445);border-radius:var(--rl);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden;margin-bottom:12px">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--gold),var(--gold2),var(--gold));opacity:.75"></div>
+          <div style="font-size:28px;color:rgba(212,168,75,.35);font-family:'Cormorant Garamond',serif;margin-bottom:8px">&#10087;</div>
+          <div id="rev-title" style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(255,255,255,.93);text-align:center;line-height:1.3;margin-bottom:6px">Kitap Basligi</div>
+          <div id="rev-author" style="font-size:9px;color:rgba(212,168,75,.7);letter-spacing:.16em;text-transform:uppercase">Yazar Adi</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+          <div class="stat-box"><div class="stat-n" id="rev-wc">0</div><div class="stat-l">Kelime</div></div>
+          <div class="stat-box"><div class="stat-n" id="rev-pc">0</div><div class="stat-l">Sayfa</div></div>
+          <div class="stat-box"><div class="stat-n" id="rev-ch">0</div><div class="stat-l">Bolum</div></div>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="rev-prog" style="width:0%"></div></div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.09em;margin:14px 0 8px">&#9670; AI Onerisi</div>
+        <div class="card" style="padding:12px;margin-bottom:8px">
+          <div style="font-size:13px;color:var(--t2);line-height:1.6" id="ai-sugg">Yukleniyor...</div>
+        </div>
+        <button class="btn btn-sm" onclick="getAISugg()" style="width:100%;justify-content:center">&#8635; Yeni Oneri</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 5 — PUBLISH
+============================================================ -->
+<div class="page" id="page-5">
+  <div class="container-md">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 5 / 6 — Yayinlama</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--t1);margin-bottom:4px">Eserinizi <em style="color:var(--gold)">Dunyaya</em> Acin</h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:16px">Format secin, kapak onayin, siparisi tamamlayin</p>
+    <div id="si-5"></div>
+    <div class="grid3" style="margin-bottom:16px">
+      <div class="pub-card" id="pub-digital" onclick="selPub('digital',this)">
+        <span class="pub-icon">&#128241;</span>
+        <div class="pub-title">Dijital Kitap</div>
+        <div class="pub-desc">PDF &amp; e-Kitap. Aninda indir, sinursiz paylas.</div>
+        <div class="pub-badge" style="background:var(--blue-bg);border:1px solid var(--blue-bd);color:var(--blue-tx)">&#10003; Aninda Hazir</div>
+        <div class="pub-price">&#8378;199</div>
+        <div class="pub-sub">Tek seferlik</div>
+        <button class="btn btn-blue btn-full btn-sm" onclick="event.stopPropagation();openPubForm('digital')">Sec &amp; Siparis Ver</button>
+      </div>
+      <div class="pub-card sel" id="pub-audio" onclick="selPub('audio',this)">
+        <span class="pub-icon">&#127911;</span>
+        <div class="pub-title">Sesli Kitap</div>
+        <div class="pub-desc">AI sesiyle veya kendi sesinizle. Spotify &amp; KaliaBooks.</div>
+        <div class="pub-badge" style="background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold)">&#9670; Populer</div>
+        <div class="pub-price">&#8378;349</div>
+        <div class="pub-sub">Dijital dahil</div>
+        <button class="btn btn-gold btn-full btn-sm" onclick="event.stopPropagation();openPubForm('audio')">Sec &amp; Siparis Ver</button>
+      </div>
+      <div class="pub-card" id="pub-print" onclick="selPub('print',this)">
+        <span class="pub-icon">&#128218;</span>
+        <div class="pub-title">Basili Kitap</div>
+        <div class="pub-desc">Gercek baski, ozel kapak. Adresinize kargo.</div>
+        <div class="pub-badge" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red-tx)">&#9670; Premium</div>
+        <div class="pub-price">&#8378;799</div>
+        <div class="pub-sub">/adet + kargo</div>
+        <button class="btn btn-sm btn-full" onclick="event.stopPropagation();openPubForm('print')">Sec &amp; Siparis Ver</button>
+      </div>
+    </div>
+    <!-- Inline publish form -->
+    <div class="inline-form" id="pub-form">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--t1);margin-bottom:4px" id="pub-form-title">Siparis Formu</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:14px" id="pub-form-sub">Bilgilerinizi girin</div>
+      <div class="grid2">
+        <div>
+          <label class="inp-lbl">Kitap Adi</label>
+          <input type="text" class="inp" id="pub-bname">
+          <label class="inp-lbl">Alici E-posta</label>
+          <input type="email" class="inp" id="pub-email" placeholder="email@ornek.com">
+          <label class="inp-lbl">Kapak Tasarimi</label>
+          <select class="sel" id="pub-cover">
+            <option>Klasik &amp; Zarif</option>
+            <option>Modern &amp; Minimalist</option>
+            <option>Nostaljik &amp; Vintage</option>
+            <option>Koyu &amp; Premium</option>
+          </select>
+        </div>
+        <div id="pub-print-extra" style="display:none">
+          <label class="inp-lbl">Teslimat Adresi *</label>
+          <input type="text" class="inp" id="pub-addr" placeholder="Mahalle, Sokak, No, Daire">
+          <div class="grid2">
+            <div>
+              <label class="inp-lbl">Ilce</label>
+              <input type="text" class="inp" id="pub-ilce" placeholder="Kadikoy">
+            </div>
+            <div>
+              <label class="inp-lbl">Sehir</label>
+              <input type="text" class="inp" id="pub-sehir" placeholder="Istanbul">
+            </div>
+          </div>
+          <div class="grid2">
+            <div>
+              <label class="inp-lbl">Posta Kodu</label>
+              <input type="text" class="inp" id="pub-posta" placeholder="34000">
+            </div>
+            <div>
+              <label class="inp-lbl">Adet</label>
+              <input type="number" class="inp" id="pub-adet" value="1" min="1">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notice notice-gold" style="display:flex;align-items:center;gap:8px">
+        <span>&#128274;</span> Stripe ile guvenli odeme &middot; 7 gun iade garantisi
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:14px;color:var(--t2)">Toplam:</span>
+        <span id="pub-total" style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--gold)">&#8378;349</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="confirmOrder()">&#9670; Odemeyi Tamamla &amp; Yayinla</button>
+        <button class="btn btn-sm" onclick="closePubForm()">Iptal</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-sm" onclick="goTo(4)">&#8592; AI Editore Don</button>
+      <button class="btn btn-sm" onclick="goTo(6)">Hediye &amp; Dagitima Gec &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 6 — GIFT & DISTRIBUTION
+============================================================ -->
+<div class="page" id="page-6">
+  <div class="container">
+    <div style="font-size:11px;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;font-weight:600">Adim 6 / 6 — Hediye &amp; Dagitim</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--t1);margin-bottom:4px">Sevdiklerinize <em style="color:var(--gold)">Miras</em></h2>
+    <p style="font-size:14px;color:var(--t2);margin-bottom:16px">Alici ekleyin, on yazi yazin, dijital platformlara dagitin</p>
+    <div id="si-6"></div>
+    <div class="grid2" style="margin-bottom:16px;align-items:start">
+      <!-- RECIPIENTS -->
+      <div class="card">
+        <div class="card-hd">&#9670; Alicilar</div>
+        <div id="rec-list" style="margin-bottom:10px"></div>
+        <button class="btn btn-sm btn-full btn-dashed" onclick="toggleAddRec()" id="add-rec-btn">+ Alici Ekle</button>
+        <!-- Inline add recipient form -->
+        <div class="inline-form" id="add-rec-form" style="margin-top:10px">
+          <div style="font-size:14px;font-weight:600;color:var(--gold);margin-bottom:12px">Yeni Alici Bilgileri</div>
+          <div class="grid2">
+            <div>
+              <label class="inp-lbl">Ad Soyad *</label>
+              <input type="text" class="inp" id="nr-name" placeholder="Ahmet Yilmaz">
+              <label class="inp-lbl">Iliski</label>
+              <input type="text" class="inp" id="nr-rel" placeholder="Oglum / Kizim">
+              <label class="inp-lbl">E-posta *</label>
+              <input type="email" class="inp" id="nr-email" placeholder="ahmet@ornek.com">
+              <label class="inp-lbl">Telefon</label>
+              <input type="tel" class="inp" id="nr-phone" placeholder="+90 555 000 0000">
+            </div>
+            <div>
+              <label class="inp-lbl">Teslimat Adresi</label>
+              <input type="text" class="inp" id="nr-addr" placeholder="Mahalle, Sokak, No, Daire">
+              <div class="grid2">
+                <div><label class="inp-lbl">Ilce</label><input type="text" class="inp" id="nr-ilce" placeholder="Kadikoy"></div>
+                <div><label class="inp-lbl">Sehir</label><input type="text" class="inp" id="nr-city" placeholder="Istanbul"></div>
+              </div>
+              <div class="grid2">
+                <div><label class="inp-lbl">Posta</label><input type="text" class="inp" id="nr-posta" placeholder="34000"></div>
+                <div><label class="inp-lbl">Ulke</label>
+                  <select class="sel" id="nr-country">
+                    <option>Turkiye</option><option>Almanya</option><option>ABD</option>
+                    <option>Ingiltere</option><option>Hollanda</option><option>Fransa</option>
+                    <option>Avustralya</option><option>Kanada</option>
+                  </select>
+                </div>
+              </div>
+              <label class="inp-lbl">Format</label>
+              <select class="sel" id="nr-format">
+                <option>Dijital — 199</option>
+                <option>Dijital + Sesli — 349</option>
+                <option>Basili + Dijital — 999</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="confirmAddRec()">&#10003; Aliciyi Ekle</button>
+            <button class="btn btn-sm" onclick="toggleAddRec()">Iptal</button>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <label class="inp-lbl">Tum Alicilar Icin Format</label>
+          <select class="sel" id="gift-fmt">
+            <option>Dijital — 199/kisi</option>
+            <option>Dijital + Sesli — 349/kisi</option>
+            <option>Basili + Dijital — 999/kisi</option>
+          </select>
+          <label class="inp-lbl">Teslimat Tercihi</label>
+          <select class="sel">
+            <option>E-posta ile dijital erisim</option>
+            <option>Kargo ile basili</option>
+            <option>Ozel hediye paketi + kargo</option>
+          </select>
+          <button class="btn btn-gold btn-full" onclick="sendAllGifts()">&#127873; Tum Alicilara Gonder</button>
+        </div>
+      </div>
+      <!-- DEDICATION & SENDER -->
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-hd">&#9670; Ozel On Yazi</div>
+          <div style="font-size:12px;color:var(--t2);margin-bottom:10px;line-height:1.55">Kitabin ic kapagina basilacak kisisel mesajiniz</div>
+          <textarea class="ta inp" id="ded-ta" rows="5" oninput="updDed()" placeholder="Sevgili cocuklarima,&#10;&#10;Bu kitabi sizler icin yazdim...&#10;&#10;Sevenin, Baban">Sevgili cocuklarima,
+
+Bu kitabi sizler icin yazdim. Hayatimin her kosesinde sizi hissettim. Belki bir gun, uzak bir zamanda bu sayfalari acar ve beni bulursunuz...
+
+Sevenin,
+Baban</textarea>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--t3)">
+            <span>Ic kapaga yazdirilir</span>
+            <span id="ded-count" style="color:var(--gold)">0/500</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn btn-sm" style="flex:1;justify-content:center" onclick="saveDed()">&#128190; Kaydet</button>
+            <button class="btn btn-sm" style="flex:1;justify-content:center" onclick="genDed()">&#10022; AI Oner</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">&#9670; Gonderici Bilgileri</div>
+          <label class="inp-lbl">Gonderici Adi</label>
+          <input type="text" class="inp" id="sender-name" placeholder="Sevenin — Baban">
+          <label class="inp-lbl">Gonderim Tarihi</label>
+          <input type="date" class="inp" id="sender-date">
+          <label class="inp-lbl">Ozel Not (E-postada gorunur)</label>
+          <input type="text" class="inp" id="sender-note" placeholder="Seni dusunuyorum ve bu kitabi sana birakiyorum...">
+        </div>
+      </div>
+    </div>
+    <!-- DIGITAL MEDIA -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hd">&#9670; Dijital Dagitim Ekosistemi</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">Eseri onayladiginizda asagidaki platformlara otomatik iletilir. Her platform icin ayri onay verebilirsiniz.</div>
+      <div class="grid4" id="media-grid"></div>
+      <div class="notice notice-blue" style="margin-top:10px">
+        &#127916; <strong>Ilerde bu hikayeler dizi veya film olabilir.</strong> KaliaBooks ortaklarina otomatik sunulur. Yazarlar telif hakki ve gelir paylasimiyla dahil edilir.
+        <button class="btn btn-blue btn-sm" style="margin-left:10px" onclick="openNetflixForm()">Basvur</button>
+      </div>
+      <!-- Netflix inline form -->
+      <div class="inline-form" id="netflix-form" style="margin-top:10px">
+        <div style="font-size:15px;font-weight:600;color:var(--t1);margin-bottom:4px">Dizi / Film Basvurusu</div>
+        <div class="notice notice-gold">Premium plan gerektirir. Degerlendirme 30-90 gun surer.</div>
+        <label class="inp-lbl">Hikaye Ozeti (Max 500 karakter)</label>
+        <textarea class="ta inp" id="nf-sum" rows="3" style="min-height:80px" placeholder="Hikayenizin kisa ozeti..."></textarea>
+        <div class="grid2">
+          <div>
+            <label class="inp-lbl">Hedef Platform</label>
+            <select class="sel"><option>Netflix</option><option>Amazon Prime</option><option>Disney+</option><option>BluTV</option><option>Tumu</option></select>
+          </div>
+          <div>
+            <label class="inp-lbl">Icerik Turu</label>
+            <select class="sel"><option>Dizi</option><option>Film</option><option>Belgesel</option></select>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="submitNetflix()">&#127916; Basvuruyu Gonder</button>
+          <button class="btn btn-sm" onclick="closeNetflixForm()">Iptal</button>
+        </div>
+      </div>
+    </div>
+    <!-- SOCIAL SHARE -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-hd">&#9670; Sosyal Medyada Duyur</div>
+      <div class="ai-bar show" id="social-ai-bar"><div class="ai-spin"></div>AI sosyal medya metni hazirlaniyor...</div>
+      <div id="social-text-box" style="display:none;background:var(--gold-bg);border:1px solid var(--gold-bd);border-radius:var(--r);padding:13px;font-size:13px;color:var(--t1);line-height:1.65;margin-bottom:12px"></div>
+      <div class="share-grid">
+        <button class="share-btn" onclick="doShare('Instagram')">&#128247; Instagram</button>
+        <button class="share-btn" onclick="doShare('Twitter/X')">&#128038; Twitter/X</button>
+        <button class="share-btn" onclick="doShare('Facebook')">&#128213; Facebook</button>
+        <button class="share-btn" onclick="doShare('WhatsApp')">&#128250; WhatsApp</button>
+        <button class="share-btn" onclick="doShare('LinkedIn')">&#128188; LinkedIn</button>
+        <button class="share-btn" onclick="doShare('TikTok')">&#127925; TikTok</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="btn btn-sm" onclick="goTo(5)">&#8592; Yayinlamaya Don</button>
+      <button class="btn btn-gold" style="flex:1;justify-content:center" onclick="completeAll()">&#127881; Her Seyi Tamamla &amp; Kitabimi Gonder</button>
+    </div>
+    <!-- SUCCESS -->
+    <div class="success-panel" id="success-panel">
+      <div style="font-size:52px;margin-bottom:14px">&#127881;&#128214;</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--green-tx);margin-bottom:6px">Kitabiniz Hazir!</div>
+      <div style="font-size:14px;color:var(--green-tx);margin-bottom:14px">Tebrikler! Eseriniz olusturuldu ve gonderildi.</div>
+      <div style="background:rgba(255,255,255,.6);border-radius:var(--r);padding:14px;font-size:13px;color:var(--green-tx);text-align:left;line-height:1.75;white-space:pre-line;margin-bottom:16px" id="success-sum"></div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="resetAll()">&#127968; Ana Sayfaya Don</button>
+        <button class="btn" onclick="goTo(1)">Yeni Kitap Yaz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading-ov">
+  <div class="loading-box">
+    <div class="loading-icon">&#128214;</div>
+    <div class="loading-title" id="ld-title">Isleniyor...</div>
+    <div class="loading-sub" id="ld-sub">Lutfen bekleyin</div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<style>
+.bt-card { display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .2s;background:var(--card); }
+.bt-card:hover,.bt-card.sel { border-color:var(--gold-bd);background:var(--gold-bg); }
+.bt-n { font-size:12px;font-weight:600;color:var(--t1); }
+.bt-d { font-size:10px;color:var(--t3); }
+.bt-card.sel .bt-n { color:var(--gold); }
+.pg-opt { padding:6px 13px;border-radius:20px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s; }
+.pg-opt:hover,.pg-opt.sel { background:var(--gold-bg);border-color:var(--gold-bd);color:var(--gold); }
+.sty-opt { padding:6px 12px;border-radius:6px;border:1px solid var(--bd);background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:all .2s; }
+.sty-opt:hover,.sty-opt.sel { background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue-tx); }
+</style>
+
+<script>
+// ─────────────────────────────────
+// STATE
+// ─────────────────────────────────
+const S = {
+  step: 0,
+  plan: 'author',
+  user: null,
+  book: {
+    title: '', author: '', subtitle: '', type: 'memory',
+    pages: 100, lang: 'Turkce', style: 'Sicak & Kisisel',
+    cover: 'Klasik & Zarif', note: '', text: '',
+    aiContent: '', chapters: [], publishFormat: null
+  },
+  recipients: [],
+  dedication: ''
+};
+let aiPT, isRec = false, recInt, recSecs = 0, activeChIdx = 0;
+const $ = id => document.getElementById(id);
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 3200);
+}
+function showLoading(title = 'Isleniyor...', sub = 'Lutfen bekleyin') {
+  $('ld-title').textContent = title; $('ld-sub').textContent = sub;
+  $('loading-ov').classList.add('show');
+}
+function hideLoading() { $('loading-ov').classList.remove('show'); }
+
+// ─────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────
+function goTo(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  $('page-' + n).classList.add('on');
+  document.querySelectorAll('.ns').forEach((s, i) => {
+    s.classList.toggle('active', i === n);
+    s.classList.toggle('done', i < n);
+  });
+  S.step = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  buildSI(n);
+  if (n === 4) initReview();
+  if (n === 6) initGift();
+}
+function buildSI(n) {
+  const labels = ['Uye Ol', 'Kitap Kur', 'Yaz/Anlat', 'AI Editor', 'Yayinla', 'Hediye'];
+  const el = $('si-' + n); if (!el) return;
+  let html = '<div class="steps-ind">';
+  labels.forEach((lbl, i) => {
+    const step = i + 1;
+    const cls = step < n ? 'done' : step === n ? 'active' : '';
+    html += `<div class="si-wrap"><div class="si-dot ${cls}">${step < n ? '&#10003;' : step}</div><div class="si-lbl ${cls}">${lbl}</div></div>`;
+    if (i < labels.length - 1) html += `<div class="si-line ${step < n ? 'done' : ''}"></div>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ─────────────────────────────────
+// AUTH
+// ─────────────────────────────────
+function openLoginForm() { $('login-form').classList.add('open'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function closeLoginForm() { $('login-form').classList.remove('open'); }
+function socialLogin(prov) {
+  showLoading(prov + ' ile giris yapiliyor...', 'Hesabiniz dogrulanıyor');
+  setTimeout(() => {
+    hideLoading();
+    S.user = { name: 'Kullanici', email: prov.toLowerCase() + '@user.com', plan: S.plan };
+    closeLoginForm(); toast('&#10003; ' + prov + ' ile giris basarili!');
+    setTimeout(() => goTo(2), 800);
+  }, 1600);
+}
+function doLogin() {
+  const email = $('login-email').value.trim(), pass = $('login-pass').value;
+  if (!email || !pass) { toast('E-posta ve sifre girin'); return; }
+  showLoading('Giris yapiliyor...', 'Hesabiniz dogrulanıyor');
+  setTimeout(() => {
+    hideLoading(); S.user = { name: 'Yazar', email, plan: 'author' };
+    closeLoginForm(); toast('&#10003; Giris basarili!');
+    loadSaved(); setTimeout(() => goTo(3), 800);
+  }, 1400);
+}
+function doForgotPass() { toast('&#128231; Sifre sifirlama baglantisi e-postaniza gonderildi'); }
+function selPlan(p) {
+  ['free', 'author', 'premium'].forEach(x => $('plan-' + x).classList.remove('sel'));
+  $('plan-' + p).classList.add('sel'); S.plan = p;
+}
+function doRegister() {
+  const name = $('reg-name').value.trim(), email = $('reg-email').value.trim();
+  const pass = $('reg-pass').value, pass2 = $('reg-pass2').value;
+  if (!name) { toast('Ad Soyad zorunludur'); return; }
+  if (!email || !email.includes('@')) { toast('Gecerli e-posta girin'); return; }
+  if (pass.length < 8) { toast('Sifre en az 8 karakter olmali'); return; }
+  if (pass !== pass2) { toast('Sifreler eslesmiyor'); return; }
+  if (!$('chk-kvkk').checked || !$('chk-terms').checked) { toast('Zorunlu onaylari isaretle'); return; }
+  showLoading('Hesabiniz olusturuluyor...', 'Yazarlik ofisiniz aciliyor');
+  setTimeout(() => {
+    hideLoading();
+    S.user = { name, email, plan: S.plan };
+    S.book.author = name + ' — ' + new Date().getFullYear();
+    toast('&#10003; Hos geldiniz ' + name + '!');
+    setTimeout(() => goTo(2), 800);
+  }, 1800);
+}
+
+// ─────────────────────────────────
+// BOOK SETUP
+// ─────────────────────────────────
+function selBT(t, el) { document.querySelectorAll('.bt-card').forEach(b => b.classList.remove('sel')); el.classList.add('sel'); S.book.type = t; }
+function selPg(pg, el) { document.querySelectorAll('.pg-opt').forEach(p => p.classList.remove('sel')); el.classList.add('sel'); S.book.pages = parseInt(pg); syncPreview(); }
+function selSty(el) { document.querySelectorAll('.sty-opt').forEach(s => s.classList.remove('sel')); el.classList.add('sel'); S.book.style = el.textContent; }
+function syncPreview() {
+  const t = $('setup-title')?.value || S.book.title;
+  const a = $('setup-author')?.value || S.book.author;
+  if (t) { S.book.title = t; ['pvb-title', 'rev-title'].forEach(id => { const e = $(id); if (e) e.textContent = t; }); }
+  if (a) { S.book.author = a; ['pvb-author', 'rev-author'].forEach(id => { const e = $(id); if (e) e.textContent = a; }); }
+  const pg = $('pvb-pg'); if (pg) pg.textContent = S.book.pages + ' sf.';
+}
+function doBookSetup() {
+  const title = $('setup-title').value.trim(), author = $('setup-author').value.trim();
+  if (!title) { toast('Kitap basligi zorunludur'); return; }
+  if (!author) { toast('Yazar adi zorunludur'); return; }
+  S.book.title = title; S.book.author = author;
+  S.book.subtitle = $('setup-subtitle').value;
+  S.book.note = $('setup-note').value;
+  S.book.lang = $('setup-lang').value;
+  syncPreview();
+  const sub = $('write-sub'); if (sub) sub.textContent = '"' + title + '" — ' + S.book.pages + ' sayfa \u00b7 ' + S.book.style;
+  showLoading('Kitabiniz kuruluyor...', 'Yazarlik alaniniz hazirlaniyor');
+  setTimeout(() => {
+    hideLoading(); loadSaved(); toast('&#10003; "' + title + '" hazir! Yazmaya basla.');
+    setTimeout(() => goTo(3), 800);
+  }, 1600);
+}
+
+// ─────────────────────────────────
+// WRITE PAGE
+// ─────────────────────────────────
+function switchWT(tab) {
+  ['write', 'voice', 'upload'].forEach(t => {
+    $('wtab-' + t).classList.toggle('active', t === tab);
+    $('wp-' + t).style.display = t === tab ? 'block' : 'none';
+  });
+}
+function loadSaved() {
+  const txt = localStorage.getItem('kb-text'), ttl = localStorage.getItem('kb-title');
+  const whn = localStorage.getItem('kb-when');
+  const cb = $('continue-bar');
+  if (txt && txt.trim()) {
+    if (ttl) S.book.title = ttl;
+    S.book.author = localStorage.getItem('kb-author') || S.book.author;
+    const ta = $('w-text'); if (ta) ta.value = txt;
+    if (cb) { cb.style.display = 'flex'; }
+    const ct = $('cb-title'), cs = $('cb-sub');
+    if (ct && ttl) ct.textContent = '"' + ttl + '" — Kaldigin yerden devam et';
+    if (cs) cs.textContent = (whn ? whn + ' \u00b7 ' : '') + txt.trim().split(/\s+/).length + ' kelime';
+    liveWrite();
+  } else { if (cb) cb.style.display = 'none'; }
+}
+function continueWrite() {
+  $('continue-bar').style.display = 'none';
+  const txt = localStorage.getItem('kb-text');
+  if (txt) { $('w-text').value = txt; liveWrite(); }
+  toast('&#9670; Kaldigin yerden devam ediyorsun!');
+}
+function liveWrite() {
+  const ta = $('w-text'); if (!ta) return;
+  const text = ta.value; S.book.text = text;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const pages = Math.round(words / 250);
+  const prog = Math.min(100, Math.round(words / (S.book.pages * 250) * 100));
+  [['wc-words', words], ['wc-pages', pages], ['pvb-wn', words], ['pvb-pn', pages]].forEach(([id, v]) => { const e = $(id); if (e) e.textContent = v; });
+  const pr = $('pvb-pr'); if (pr) pr.textContent = '%' + prog;
+  syncPreview();
+  if (text.length > 40) {
+    clearTimeout(aiPT);
+    const bar = $('pvb-ai-bar'); if (bar) bar.classList.add('show');
+    aiPT = setTimeout(async () => {
+      try {
+        const p = await callClaude('Bu ham metni edebi, sicak Turkcede 2 guzel cumleye donustur. Duz metin: "' + text.slice(0, 250) + '"');
+        const bar2 = $('pvb-ai-bar'); if (bar2) bar2.classList.remove('show');
+        const exc = $('pvb-exc');
+        if (exc) { exc.style.color = 'var(--t1)'; exc.innerHTML = '<em>' + p + '</em>'; }
+      } catch (e) {
+        const bar2 = $('pvb-ai-bar'); if (bar2) bar2.classList.remove('show');
+      }
+    }, 1800);
+  }
+}
+function saveText() {
+  const txt = $('w-text')?.value;
+  if (!txt?.trim()) { toast('Kaydedilecek icerik yok'); return; }
+  localStorage.setItem('kb-text', txt);
+  localStorage.setItem('kb-title', S.book.title);
+  localStorage.setItem('kb-author', S.book.author);
+  localStorage.setItem('kb-when', new Date().toLocaleString('tr-TR'));
+  const ss = $('wc-save'); if (ss) { ss.textContent = '&#10003; Kaydedildi'; ss.style.color = 'var(--green-tx)'; setTimeout(() => { ss.textContent = 'Otomatik kaydedilir'; ss.style.color = ''; }, 2500); }
+  const ps = $('preview-saved'); if (ps) ps.textContent = '&#10003; Kaydedildi';
+  toast('&#128190; Taslak kaydedildi!');
+}
+function clearText() {
+  if (!confirm('Yazdiklarinizi temizlemek istiyor musunuz?')) return;
+  const ta = $('w-text'); if (ta) ta.value = ''; liveWrite(); toast('Temizlendi');
+}
+async function generateAI() {
+  const text = $('w-text')?.value?.trim() || $('transcript-text')?.textContent?.trim() || S.book.text;
+  if (!text) { toast('Once bir seyler yazin veya anlatin'); return; }
+  const bar = $('write-ai-bar'); if (bar) bar.classList.add('show');
+  showLoading('Claude AI calisiyor...', 'Metniniz edebi bir esere donusturuluyor');
+  const prompt = 'Sen odullu bir Turk yazar ve editorusun. Bu ham anlatiyi kisisel ani kitabi formatinda, ' + S.book.style + ' tarzinda, sicak akici Turkcede yeniden yaz. Baslik: "' + (S.book.title || 'Anilarim') + '". Ham metin: "' + text.slice(0, 500) + '". 4-5 paragraf. Duz metin.';
+  try {
+    const result = await callClaude(prompt);
+    if (bar) bar.classList.remove('show'); hideLoading();
+    S.book.aiContent = result;
+    S.book.chapters = [
+      { title: 'Bolum 1: Baslangic', content: result.slice(0, Math.floor(result.length / 2)), done: false },
+      { title: 'Bolum 2: Devam', content: result.slice(Math.floor(result.length / 2)), done: false },
+    ];
+    const exc = $('pvb-exc'); if (exc) { exc.style.color = 'var(--t1)'; exc.innerHTML = '<em>' + result.slice(0, 180) + '...</em>'; }
+    toast('&#9670; AI duzenleme hazir! AI Editore geciliyor...');
+    setTimeout(() => goTo(4), 1000);
+  } catch (e) {
+    if (bar) bar.classList.remove('show'); hideLoading();
+    toast('&#9888; AI baglantisi kurulamadi. Tekrar deneyin.');
+  }
+}
+// VOICE
+function toggleRec() {
+  const btn = $('mic-btn'), waves = document.querySelectorAll('.wave'), timer = $('rec-timer');
+  isRec = !isRec;
+  if (isRec) {
+    btn.classList.add('rec'); btn.innerHTML = '&#9209;&#65039;'; recSecs = 0;
+    recInt = setInterval(() => {
+      recSecs++;
+      const m = String(Math.floor(recSecs / 60)).padStart(2, '0'), s = String(recSecs % 60).padStart(2, '0');
+      if (timer) timer.textContent = m + ':' + s;
+      waves.forEach(w => { const h = Math.random() * 22 + 5; w.style.height = h + 'px'; });
+    }, 1000);
+    toast('&#128308; Kayit basladi — hikayenizi anlatin');
+  } else {
+    btn.classList.remove('rec'); btn.innerHTML = '&#127908;';
+    clearInterval(recInt); waves.forEach(w => w.style.height = '4px');
+    toast('&#10003; Kayit tamamlandi — AI donusturuyor...');
+    showLoading('Ses donusturuluyor...', 'AI sesinizi metne ceviriyor');
+    setTimeout(() => {
+      hideLoading();
+      const sample = 'Cocuklugumu hep o kokuyla hatirliyorum... Buyukannemin evindeki taze ekmek kokusu. Her sabah erken kalkar, tandirda ekmek yapar, bizi oyle uyandirirdi. 1975 yaziydi saniyorum.';
+      const res = $('transcript-result'), txt = $('transcript-text');
+      if (res) res.style.display = 'block';
+      if (txt) { txt.textContent = sample; S.book.text = sample; }
+      toast('&#10003; Ses metne cevrildi!');
+    }, 1800);
+  }
+}
+// FILE UPLOAD
+function handleFile(event) {
+  const file = event.target.files[0]; if (!file) return;
+  showLoading('Dosya okunuyor...', file.name + ' isleniyor');
+  const reader = new FileReader();
+  reader.onload = e => {
+    setTimeout(() => {
+      hideLoading();
+      const text = (e.target.result || '').slice(0, 3000);
+      S.book.text = text;
+      const ta = $('w-text'); if (ta) ta.value = text;
+      liveWrite();
+      $('upload-result').style.display = 'block';
+      $('upload-msg').textContent = '&#10003; "' + file.name + '" yuklendi! (' + Math.round(file.size / 1024) + ' KB)';
+      toast('&#10003; Dosya yuklendi!');
+    }, 1200);
+  };
+  reader.onerror = () => { hideLoading(); toast('Dosya okunamadi'); };
+  reader.readAsText(file);
+}
+function handleDrop(event) {
+  event.preventDefault(); $('upload-drop').style.borderColor = 'var(--bd2)';
+  const file = event.dataTransfer.files[0];
+  if (file) handleFile({ target: { files: [file] } });
+}
+
+// ─────────────────────────────────
+// AI EDITOR
+// ─────────────────────────────────
+function initReview() {
+  if (!S.book.chapters.length) {
+    const c = S.book.aiContent || S.book.text || 'Icerik burada gorunecek. Once yazmak gerekiyor.';
+    S.book.chapters = [
+      { title: 'Bolum 1: Baslangic', content: c.slice(0, Math.floor(c.length / 2) || c.length), done: false },
+      { title: 'Bolum 2: Devam', content: c.slice(Math.floor(c.length / 2)) || '...', done: false },
+      { title: 'Bolum 3: Kapanis', content: 'Kapanis bolumu...', done: false },
+    ];
+  }
+  renderChList(); updateRevStats(); getAISugg();
+  const rt = $('rev-title'), ra = $('rev-author');
+  if (rt) rt.textContent = S.book.title || 'Kitap Basligi';
+  if (ra) ra.textContent = S.book.author || 'Yazar Adi';
+}
+function renderChList() {
+  const list = $('ch-list'); if (!list) return;
+  list.innerHTML = S.book.chapters.map((ch, i) => `
+    <div class="ch-item ${i === activeChIdx ? 'active' : ''} ${ch.done ? 'ch-done' : ''}" onclick="selCh(${i})">
+      <div class="ch-num">${ch.done ? '&#10003;' : (i + 1)}</div>
+      <div class="ch-title">${ch.title}</div>
+      <div class="ch-status">${ch.done ? '&#10003; Onaylandi' : 'Duzenle'}</div>
+    </div>`).join('');
+  const cc = $('ch-content');
+  if (cc) cc.value = S.book.chapters[activeChIdx]?.content || '';
+}
+function selCh(i) { activeChIdx = i; renderChList(); }
+function addChapter() {
+  const t = prompt('Bolum basligi:'); if (!t) return;
+  S.book.chapters.push({ title: t, content: 'Bu bolumun icerigi...', done: false });
+  renderChList(); updateRevStats(); toast('&#10003; Yeni bolum eklendi');
+}
+async function rewriteCh() {
+  const ch = S.book.chapters[activeChIdx]; if (!ch) return;
+  showLoading('Bolum yeniden yaziliyor...', 'Claude AI calisiyor');
+  try { const r = await callClaude('Bu bolumu "' + S.book.style + '" tarzinda yeniden yaz: "' + ch.content.slice(0, 400) + '". 2-3 paragraf. Duz metin.'); hideLoading(); ch.content = r; renderChList(); toast('&#10003; Yeniden yazildi'); } catch (e) { hideLoading(); toast('Hata olustu'); }
+}
+async function extendCh() {
+  const ch = S.book.chapters[activeChIdx]; if (!ch) return;
+  showLoading('Bolum uzatiliyor...', 'Claude AI calisiyor');
+  try { const r = await callClaude('Bu metni 1-2 paragraf daha uzat: "' + ch.content.slice(0, 300) + '". Duz metin.'); hideLoading(); ch.content = ch.content + '\n\n' + r; renderChList(); toast('&#10003; Uzatildi'); } catch (e) { hideLoading(); toast('Hata olustu'); }
+}
+async function shortenCh() {
+  const ch = S.book.chapters[activeChIdx]; if (!ch) return;
+  showLoading('Bolum kisaltiliyor...', 'Claude AI calisiyor');
+  try { const r = await callClaude('Bu metni yariya kisalt: "' + ch.content.slice(0, 600) + '". Duz metin.'); hideLoading(); ch.content = r; renderChList(); toast('&#10003; Kisaltildi'); } catch (e) { hideLoading(); toast('Hata olustu'); }
+}
+function approveCh() { S.book.chapters[activeChIdx].done = true; renderChList(); updateRevStats(); toast('&#10003; Bolum onaylandi!'); }
+function updateRevStats() {
+  const totalW = S.book.chapters.reduce((s, ch) => s + (ch.content?.split(/\s+/).length || 0), 0);
+  const totalP = Math.round(totalW / 250), prog = Math.min(100, Math.round(totalW / (S.book.pages * 250) * 100));
+  const wc = $('rev-wc'), pc = $('rev-pc'), ch = $('rev-ch'), pr = $('rev-prog');
+  if (wc) wc.textContent = totalW; if (pc) pc.textContent = totalP;
+  if (ch) ch.textContent = S.book.chapters.length; if (pr) pr.style.width = prog + '%';
+}
+function getAISugg() {
+  const el = $('ai-sugg'); if (!el) return;
+  const suggs = ['Anlatiminiz cok akici. Spesifik anilar ve diyaloglar ekleyin.', 'Giris bolumune merak uyandiran bir soru ile baslayin.', 'Son bolumde okuyucuya dogrudan seslenin — kisisel dokunusu cok guclu olur.', 'Tarihler ve yerler ekleyin — belirli detaylar aniyi daha canli yapar.'];
+  el.textContent = suggs[Math.floor(Math.random() * suggs.length)];
+}
+function finalizeBook() {
+  if (!S.book.chapters.every(c => c.done)) { toast('Tum bolumleri onaylayin'); return; }
+  toast('&#9670; Onaylandi! Yayinlama seceneklerine geciliyor...');
+  setTimeout(() => goTo(5), 1000);
+}
+
+// ─────────────────────────────────
+// PUBLISH
+// ─────────────────────────────────
+function selPub(type, el) {
+  document.querySelectorAll('.pub-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel'); S.book.publishFormat = type;
+}
+function openPubForm(type) {
+  S.book.publishFormat = type;
+  const prices = { digital: '&#8378;199', audio: '&#8378;349', print: '&#8378;799/adet' };
+  const titles = { digital: 'Dijital Kitap Siparisi', audio: 'Sesli Kitap Siparisi', print: 'Basili Kitap Siparisi' };
+  const subs = { digital: 'PDF & e-Kitap — aninda teslim', audio: 'Sesli kitap + Dijital dahil', print: 'Gercek baski — adresinize kargo' };
+  $('pub-form-title').textContent = titles[type]; $('pub-form-sub').textContent = subs[type];
+  $('pub-total').innerHTML = prices[type];
+  const bn = $('pub-bname'); if (bn) bn.value = S.book.title || '';
+  const extra = $('pub-print-extra'); if (extra) extra.style.display = type === 'print' ? 'block' : 'none';
+  $('pub-form').classList.add('open');
+  $('pub-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function closePubForm() { $('pub-form').classList.remove('open'); }
+function confirmOrder() {
+  const email = $('pub-email').value.trim();
+  if (!email && S.book.publishFormat !== 'print') { toast('E-posta zorunludur'); return; }
+  if (S.book.publishFormat === 'print' && !$('pub-addr').value.trim()) { toast('Teslimat adresi zorunludur'); return; }
+  closePubForm();
+  showLoading('Siparişiniz isleniyor...', 'Odeme onaylaniyor');
+  setTimeout(() => { hideLoading(); toast('&#10003; Siparis alindi! Kitabiniz hazirlaniyor...'); setTimeout(() => goTo(6), 1000); }, 2000);
+}
+
+// ─────────────────────────────────
+// GIFT
+// ─────────────────────────────────
+function initGift() {
+  renderRecList(); updDed();
+  setTimeout(() => prepareSocial(), 600);
+  buildMediaGrid();
+}
+function renderRecList() {
+  const list = $('rec-list'); if (!list) return;
+  if (!S.recipients.length) { list.innerHTML = '<div style="text-align:center;padding:14px;color:var(--t3);font-size:13px">Henuz alici eklenmedi.</div>'; return; }
+  const avs = ['A', 'C', 'T', 'M', 'E', 'S'];
+  list.innerHTML = S.recipients.map((r, i) => `
+    <div class="rec-item">
+      <div class="rec-av">${r.name.charAt(0).toUpperCase()}</div>
+      <div class="rec-info">
+        <div class="rec-name">${r.name}${r.rel ? ' (' + r.rel + ')' : ''}</div>
+        <div class="rec-det">&#128231; ${r.email}${r.phone ? ' &middot; &#128241; ' + r.phone : ''}${r.city ? ' &middot; &#128205; ' + r.city : ''}${r.country ? ' ' + r.country : ''}<br>${r.format}</div>
+      </div>
+      <button onclick="removeRec(${i})" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:4px;transition:color .2s" onmouseover="this.style.color='var(--red-tx)'" onmouseout="this.style.color='var(--t3)'">&#10005;</button>
+    </div>`).join('');
+}
+function toggleAddRec() {
+  const f = $('add-rec-form');
+  f.classList.toggle('open');
+  if (f.classList.contains('open')) f.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function confirmAddRec() {
+  const name = $('nr-name').value.trim(), email = $('nr-email').value.trim();
+  if (!name) { toast('Ad Soyad zorunludur'); return; }
+  if (!email || !email.includes('@')) { toast('Gecerli e-posta girin'); return; }
+  S.recipients.push({ name, rel: $('nr-rel').value, email, phone: $('nr-phone').value, addr: $('nr-addr').value, ilce: $('nr-ilce').value, city: $('nr-city').value, posta: $('nr-posta').value, country: $('nr-country').value, format: $('nr-format').value });
+  ['nr-name', 'nr-rel', 'nr-email', 'nr-phone', 'nr-addr', 'nr-ilce', 'nr-city', 'nr-posta'].forEach(id => { const e = $(id); if (e) e.value = ''; });
+  $('add-rec-form').classList.remove('open');
+  renderRecList(); toast('&#10003; ' + name + ' alici olarak eklendi!');
+}
+function removeRec(i) { S.recipients.splice(i, 1); renderRecList(); toast('Alici kaldirildi'); }
+function sendAllGifts() {
+  if (!S.recipients.length) { toast('En az bir alici ekleyin'); return; }
+  showLoading('Hediye paketleri gonderiliyor...', S.recipients.length + ' kisiye iletiliyor');
+  setTimeout(() => { hideLoading(); toast('&#10003; ' + S.recipients.length + ' kisiye hediye paketi gonderildi!'); }, 2000);
+}
+function updDed() {
+  const v = $('ded-ta')?.value || ''; S.dedication = v;
+  const el = $('ded-count'); if (el) { el.textContent = v.length + '/500'; el.style.color = v.length > 450 ? 'var(--red-tx)' : 'var(--gold)'; }
+}
+function saveDed() { S.dedication = $('ded-ta')?.value || ''; toast('&#10003; On yazi kaydedildi'); }
+async function genDed() {
+  showLoading('AI on yazi olusturuyor...', 'Claude AI yaziyor');
+  try { const r = await callClaude('Bir ebeveynin cocuklarina biraktigi ani kitabi icin icten, duygusal Turkce on yazi yaz. 4-5 cumle. "Sevgili cocuklarima," diye basla.'); hideLoading(); const ta = $('ded-ta'); if (ta) { ta.value = r; updDed(); } toast('&#10003; AI on yazisi hazir!'); } catch (e) { hideLoading(); toast('Hata olustu'); }
+}
+function buildMediaGrid() {
+  const grid = $('media-grid'); if (!grid) return;
+  const items = [['&#128218;', 'KaliaBooks', true], ['&#127911;', 'Sesli Kitap', true], ['&#127925;', 'Spotify', false], ['&#127822;', 'Apple Books', false], ['&#128214;', 'Amazon Kindle', false], ['&#9654;&#65039;', 'YouTube', false], ['&#127908;', 'Podcast', false], ['&#128250;', 'Whatsapp Kanal', false]];
+  grid.innerHTML = items.map(([icon, name, on]) =>
+    `<div class="mc ${on ? 'mc-on' : ''}" onclick="toggleMedia(this,'${name}')">
+       <div class="mc-icon">${icon}</div>
+       <div class="mc-name">${name}</div>
+       <div class="mc-st">${on ? '&#9670; Aktif' : '&#9696; Yakin'}</div>
+     </div>`).join('');
+}
+function toggleMedia(card, name) {
+  const on = card.classList.toggle('mc-on');
+  const st = card.querySelector('.mc-st');
+  if (st) st.innerHTML = on ? '&#9670; Aktif' : '&#9696; Yakin';
+  toast(name + (on ? ' aktif edildi!' : ' devre disi birakildi'));
+}
+function openNetflixForm() { $('netflix-form').classList.add('open'); $('netflix-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+function closeNetflixForm() { $('netflix-form').classList.remove('open'); }
+function submitNetflix() {
+  const sum = $('nf-sum').value.trim(); if (!sum) { toast('Hikaye ozeti zorunludur'); return; }
+  closeNetflixForm(); showLoading('Basvurunuz gonderiliyor...', 'Medya ortaklarina iletiliyor');
+  setTimeout(() => { hideLoading(); toast('&#10003; Basvurunuz alindi! 30-90 gun icerisinde degerlendirilecek.'); }, 1600);
+}
+async function prepareSocial() {
+  const bar = $('social-ai-bar'), box = $('social-text-box'); if (!bar || !box) return;
+  bar.classList.add('show'); box.style.display = 'none';
+  try {
+    const r = await callClaude('Bir kisinin "' + (S.book.title || 'hayat hikayesi') + '" adli kitabini yayinladigi icin sosyal medya paylasim metni yaz. Kisa, etkileyici Turkce. 2 cumle.');
+    bar.classList.remove('show'); box.style.display = 'block'; box.textContent = r;
+  } catch (e) {
+    bar.classList.remove('show'); box.style.display = 'block';
+    box.textContent = '"' + (S.book.title || 'Hayat Hikayem') + '" kitabim yayinda! Hayatimin anilerini sizlerle paylasmaktan buyuk mutluluk duyuyorum. #KaliaBooks #KitabimYayinda';
+  }
+}
+function doShare(platform) {
+  const text = $('social-text-box')?.textContent || '';
+  const url = 'https://kalia.app/books/' + encodeURIComponent(S.book.title || 'kitap');
+  const urls = { Instagram: 'https://instagram.com', 'Twitter/X': 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text + ' ' + url), Facebook: 'https://facebook.com/sharer/sharer.php?u=' + url, WhatsApp: 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), LinkedIn: 'https://linkedin.com/sharing/share-offsite/?url=' + url, TikTok: 'https://tiktok.com' };
+  window.open(urls[platform] || '#', '_blank'); toast('&#10003; ' + platform + ' acildi!');
+}
+function completeAll() {
+  if (!S.recipients.length && !confirm('Hic alici eklemediniz. Devam?')) return;
+  showLoading('Her sey tamamlaniyor...', 'Kitabiniz gonderiliyor ve yayinlaniyor');
+  setTimeout(() => {
+    hideLoading();
+    const sum = '&#128214; Kitap: "' + (S.book.title || 'Kitabiniz') + '"\n&#9997;&#65039; Yazar: ' + (S.book.author || '—') + '\n&#128196; ' + S.book.pages + ' sayfa \u00b7 ' + S.book.chapters.length + ' bolum' + (S.recipients.length ? '\n&#127873; ' + S.recipients.length + ' kisiye hediye gonderildi' : '') + (S.book.publishFormat ? '\n&#128230; Format: ' + S.book.publishFormat : '') + '\n&#10003; KaliaBooks kutuphanesinde yayinda';
+    $('success-sum').innerHTML = sum;
+    const sp = $('success-panel'); if (sp) { sp.classList.add('show'); sp.scrollIntoView({ behavior: 'smooth' }); }
+  }, 2400);
+}
+function resetAll() {
+  S.book = { title: '', author: '', subtitle: '', type: 'memory', pages: 100, lang: 'Turkce', style: 'Sicak & Kisisel', cover: 'Klasik & Zarif', note: '', text: '', aiContent: '', chapters: [], publishFormat: null };
+  S.recipients = []; S.dedication = '';
+  const sp = $('success-panel'); if (sp) sp.classList.remove('show');
+  goTo(0);
+}
+
+// ─────────────────────────────────
+// CLAUDE API
+// ─────────────────────────────────
+async function callClaude(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.content?.map(b => b.text || '').join('') || '';
+}
+
+// ─────────────────────────────────
+// INIT
+// ─────────────────────────────────
+loadSaved();
+buildSI(0);
+// Ded count init
+const dedTa = document.getElementById('ded-ta');
+if (dedTa) {
+  const dc = document.getElementById('ded-count');
+  if (dc) dc.textContent = dedTa.value.length + '/500';
+}
+</script>
+</body>
+</html>
