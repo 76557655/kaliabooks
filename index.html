@@ -1699,14 +1699,13 @@ if (dedTa) {
 </script>
 </body>
 </html>
-<script>
-  // Eski bağlantıyı hiçbir şeye dokunmadan ve silmeden Gemini'ye yönlendiriyoruz
+// Sitedeki tüm yapay zeka isteklerini (editör butonları dahil) yakalayıp Gemini'ye bağlar
   window.fetch = (originalFetch => {
     return (...args) => {
       if (typeof args[0] === 'string' && args[0].includes('.netlify/functions/')) {
+        // Hangi buton olursa olsun, tüm fonksiyon isteklerini bizim ücretsiz Gemini'ye yönlendiriyoruz
         args[0] = '/.netlify/functions/ai-generate';
       }
       return originalFetch(...args);
     };
   })(window.fetch);
-</script>
