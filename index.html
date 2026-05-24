@@ -1700,45 +1700,80 @@ if (dedTa) {
 </body>
 </html>
 <script>
-  // 1. ESKİ YAZILIMCININ callClaude FONKSİYONUNU %100 ETKİSİZ HALE GETİREN KESİN PANZEHİR
-  window.callClaude = async function(prompt) {
+  // 1. BÖLÜM KİLİTLERİNİ KIRAN VE GERİ DÖNÜŞÜ SAĞLAYAN SİSTEM
+  window.selCh = (i) => {
+    activeChIdx = i;
+    const ch = S.book.chapters[i];
+    // Bölüm onaylanmış olsa bile düzenleme kutusunu açıyoruz
+    const cc = document.getElementById('ch-content');
+    if (cc) {
+      cc.value = ch.content || '';
+      // Eğer bölüm 'done' (onaylı) ise, düzenleme yapıldığında otomatik olarak 'onaylı değil' moduna çekiyoruz
+      ch.done = false; 
+    }
+    renderChList();
+    toast('Bölüm düzenleme için açıldı. Yazım hataları otomatik düzeltilecektir.');
+  };
+
+  // 2. YAZIM HATALARINI DÜZELTEN VE EDİTÖRE KUSURSUZ METİN GÖNDEREN ANA BEYİN
+  window.generateAI = async function() {
+    const text = document.getElementById('w-text')?.value?.trim() || 
+                 document.getElementById('transcript-text')?.textContent?.trim() || 
+                 S.book.text;
+                 
+    if (!text) { alert('Lütfen önce bir şeyler yazın veya anlatın.'); return; }
+    
+    document.getElementById('write-ai-bar')?.classList.add('show');
+    document.getElementById('pvb-ai-bar')?.classList.add('show');
+    
     try {
       const res = await fetch('/.netlify/functions/ai-generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: prompt, style: S.book.style || "Sıcak & Kişisel" })
+        body: JSON.stringify({ 
+          text: text, 
+          style: S.book.style || "Sıcak & Kişisel",
+          mode: "correction_and_editing" // Yapay zekaya 'Düzeltme ve Redaksiyon' modunu açıyoruz
+        })
       });
-      const data = await res.json();
       
-      // Gelen veriyi kontrol et ve ön yüze ham edebi metin olarak fırlat
-      if (data && data.result) return data.result;
-      if (typeof data === 'string') return data;
-      return JSON.stringify(data);
-    } catch (error) {
-      console.log("Gemini çağrısı yenilendi.");
-      return "Yapay zeka metni başarıyla işledi. Lütfen sayfayı tazeleyin.";
+      const data = await res.json();
+      const resultText = data.result || data;
+      
+      // AI Editor'e (4. sayfa) metni harika bir şekilde aktarıyoruz
+      S.book.aiContent = resultText;
+      
+      // Mevcut bölüme ekleme yapıyorsak orayı güncelliyoruz
+      if (S.book.chapters[activeChIdx]) {
+        S.book.chapters[activeChIdx].content = resultText;
+        S.book.chapters[activeChIdx].done = false;
+      }
+
+      // Ekrana temiz metni basıyoruz
+      const exc = document.getElementById('pvb-exc');
+      if (exc) { exc.innerHTML = '<em>' + resultText + '</em>'; }
+      
+      document.getElementById('write-ai-bar')?.classList.remove('show');
+      document.getElementById('pvb-ai-bar')?.classList.remove('show');
+      
+      toast('Yazım hataları düzeltildi ve bölüme eklendi!');
+      
+      // Eğer editör sayfasındaysak listeyi tazeliyoruz
+      if (typeof renderChList === 'function') renderChList();
+      
+    } catch (e) {
+      document.getElementById('write-ai-bar')?.classList.remove('show');
+      alert('Bağlantı tazelememiz gerekiyor, lütfen tekrar basın.');
     }
   };
 
-  // 2. BUTONLAR BASILDIĞINDA GELEN PAKETLERİ DÜZ YAZIYA ÇEVİREN KORUMA SİSTEMİ
+  // 3. NETLIFY BAĞLANTISINI KESİNTİSİZ TUTAN TRAFİK POLİSİ
   window.fetch = (originalFetch => {
     return (...args) => {
       if (typeof args[0] === 'string' && (args[0].includes('api.anthropic.com') || args[0].includes('.netlify/functions/'))) {
         args[0] = '/.netlify/functions/ai-generate';
       }
-      return originalFetch(...args).then(async (response) => {
-        if (typeof args[0] === 'string' && args[0].includes('ai-generate')) {
-          const clonedRes = response.clone();
-          try {
-            const data = await clonedRes.json();
-            if (data && data.result) {
-              // Sitedeki [object Object] yazısını zorla edebi metne dönüştürüyoruz
-              return new Response(data.result, { status: response.status, headers: response.headers });
-            }
-          } catch(e) {}
-        }
-        return response;
-      });
+      return originalFetch(...args);
     };
   })(window.fetch);
 </script>
