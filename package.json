@@ -1,0 +1,8 @@
+{
+  "name": "kaliabooks-platform",
+  "version": "1.0.0",
+  "main": "src/index.html",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0"
+  }
+}
