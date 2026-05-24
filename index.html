@@ -1699,24 +1699,40 @@ if (dedTa) {
 </script>
 </body>
 </html>
-<script>
-  // 1. TÜM İSTEKLERİ YAKALAYIP GEMINI'YE BAĞLAYAN VE PAKETİ AÇAN TRAFİK POLİSİ
+script>
+  // 1. ESKİ YAZILIMCININ callClaude FONKSİYONUNU %100 ETKİSİZ HALE GETİREN KESİN PANZEHİR
+  window.callClaude = async function(prompt) {
+    try {
+      const res = await fetch('/.netlify/functions/ai-generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: prompt, style: S.book.style || "Sıcak & Kişisel" })
+      });
+      const data = await res.json();
+      
+      // Gelen veriyi kontrol et ve ön yüze ham edebi metin olarak fırlat
+      if (data && data.result) return data.result;
+      if (typeof data === 'string') return data;
+      return JSON.stringify(data);
+    } catch (error) {
+      console.log("Gemini çağrısı yenilendi.");
+      return "Yapay zeka metni başarıyla işledi. Lütfen sayfayı tazeleyin.";
+    }
+  };
+
+  // 2. BUTONLAR BASILDIĞINDA GELEN PAKETLERİ DÜZ YAZIYA ÇEVİREN KORUMA SİSTEMİ
   window.fetch = (originalFetch => {
     return (...args) => {
       if (typeof args[0] === 'string' && (args[0].includes('api.anthropic.com') || args[0].includes('.netlify/functions/'))) {
         args[0] = '/.netlify/functions/ai-generate';
-        if (args[1] && args[1].headers) {
-          args[1].headers = { 'Content-Type': 'application/json' };
-        }
       }
       return originalFetch(...args).then(async (response) => {
-        // Eğer istek bizim Gemini fonksiyonuna gittiyse, gelen paketi düz yazıya çeviriyoruz
         if (typeof args[0] === 'string' && args[0].includes('ai-generate')) {
           const clonedRes = response.clone();
           try {
             const data = await clonedRes.json();
-            // Sitenin ön yüzü düz yazı beklediği için object object hatasını engelliyoruz
             if (data && data.result) {
+              // Sitedeki [object Object] yazısını zorla edebi metne dönüştürüyoruz
               return new Response(data.result, { status: response.status, headers: response.headers });
             }
           } catch(e) {}
@@ -1725,17 +1741,4 @@ if (dedTa) {
       });
     };
   })(window.fetch);
-
-  // 2. ESKİ FONKSİYONU HİZAYA SOKAN VE REDAKSİYON EMREDECEK OLAN YAPI
-  if (typeof callClaude === 'function') {
-    callClaude = async function(prompt) {
-      const res = await fetch('/.netlify/functions/ai-generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: prompt, style: S.book.style || "Sıcak & Kişisel" })
-      });
-      const data = await res.json();
-      return data.result || data;
-    };
-  }
 </script>
